@@ -4,6 +4,16 @@ server:
 spring:
   application:
     name: niu-demo-second
+  datasource:
+    url: jdbc:mysql://localhost:3306/rocket_transaction?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&socketTimeout=60000&autoReconnectForPools=true&allowMultiQueries=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  type-aliases-package: com.springboot.demosecond.entity
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:xml/*.xml
 
 eureka:
   instance:
@@ -12,3 +22,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:10001/eureka/
+
+rocketmq:
+  name-server: 127.0.0.1:9876 # rocketmq服务的地址
+  producer:
+    group: niu-tx-group  # 生产者组名

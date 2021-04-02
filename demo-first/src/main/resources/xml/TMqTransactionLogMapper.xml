@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.demofirst.mapper.TMqTransactionLogMapper">
+  <resultMap id="BaseResultMap" type="com.springboot.demofirst.entity.TMqTransactionLog">
+    <id column="transaction_id" jdbcType="VARCHAR" property="transactionId" />
+    <result column="log" jdbcType="VARCHAR" property="log" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    transaction_id, log
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_mq_transaction_log
+    where transaction_id = #{transactionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_mq_transaction_log
+    where transaction_id = #{transactionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="transaction_id" keyProperty="transactionId" parameterType="com.springboot.demofirst.entity.TMqTransactionLog" useGeneratedKeys="true">
+    insert into t_mq_transaction_log (transaction_id, log)
+    values (#{transactionId,jdbcType=VARCHAR}, #{log,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="transaction_id" keyProperty="transactionId" parameterType="com.springboot.demofirst.entity.TMqTransactionLog" useGeneratedKeys="true">
+    insert into t_mq_transaction_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="log != null">
+        log,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="log != null">
+        #{log,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springboot.demofirst.entity.TMqTransactionLog">
+    update t_mq_transaction_log
+    <set>
+      <if test="log != null">
+        log = #{log,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where transaction_id = #{transactionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springboot.demofirst.entity.TMqTransactionLog">
+    update t_mq_transaction_log
+    set log = #{log,jdbcType=VARCHAR}
+    where transaction_id = #{transactionId,jdbcType=VARCHAR}
+  </update>
+</mapper>
