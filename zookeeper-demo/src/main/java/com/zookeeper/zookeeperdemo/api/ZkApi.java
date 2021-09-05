@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class ZkApi {
 
-    @Autowired
+    //@Autowired
     private ZooKeeper zkClient;
 
 
@@ -132,7 +132,7 @@ public class ZkApi {
     /**
      * 测试方法  初始化
      */
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         String path = "/zk-watcher-2";
         log.info("【执行初始化测试方法。。。。。。。。。。。。】");

@@ -1,6 +1,10 @@
 package com.zookeeper.zookeeperdemo.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
@@ -20,8 +24,12 @@ public class ZookeeperConfig {
     @Value("${zookeeper.timeout}")
     private int timeout;
 
-
-    @Bean(name = "zkClient")
+    /**
+     * 原生zookeeper客户端创建
+     *
+     * @return
+     */
+    //@Bean(name = "zkClient")
     public ZooKeeper zkClient() {
         ZooKeeper zooKeeper = null;
         try {
@@ -44,6 +52,23 @@ public class ZookeeperConfig {
             log.error("初始化ZooKeeper连接异常....】={}", e);
         }
         return zooKeeper;
+    }
+
+    /**
+     * 使用curator方式使用zookeeper
+     *
+     * @return
+     */
+    @Bean(name = "zkClient")
+    public CuratorFramework getCuratorFramework(){
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000,3);
+        CuratorFramework client = CuratorFrameworkFactory.builder()
+                .connectString(connectString)
+                .retryPolicy(retryPolicy)
+                .connectionTimeoutMs(timeout)
+                .build();
+        client.start();
+        return client;
     }
 
 
